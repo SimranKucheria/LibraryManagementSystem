@@ -1,6 +1,6 @@
 DBMS MINI PROJECT SYNOPSIS
 
-PARTNER:- Simran Kucheria(111803126)
+PARTNER:- Simran Kucheria(111803134)
 Problem Statement
 Library Management System
 
