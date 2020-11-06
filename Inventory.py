@@ -1000,14 +1000,14 @@ def memberinfo(frame,root): #This fn along with memberinf is used to view the ex
 	Frame.mainloop()
 	
 # Display all Authors
-def viewa(frame,root):
+def viewa(frame,root): #This fn display all authors in db
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800")
 	Frame.title("Authors")
 	with con:
 	 	cur=con.cursor()
-	  	cur.execute("select * from AUTHOR")
+	  	cur.execute("select * from AUTHOR") #Select all records of author table
 	  	Label=Tk.Label(Frame,text="View All Authors",bg="black",fg="white",bd=5).pack(side='top')
 	  	cols=("A:ID","Name","DOB","DOD")
 	  	listBox = ttk.Treeview(Frame, columns=cols, show='headings')
@@ -1028,7 +1028,8 @@ def viewa(frame,root):
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 		Frame.mainloop()
 
-def fines(frame,Frame,p1,root):
+#View fines incurred by a particular student
+def fines(frame,Frame,p1,root): #This fn with viewf is used to display fines of a particular student. This fn in particular gets details from fn below and runs qeuries
 	Frame.destroy()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800")
@@ -1036,7 +1037,7 @@ def fines(frame,Frame,p1,root):
 	with con:
 		cur=con.cursor()
 		c=p1.get()
-		cur.execute("select FINESTUDENT.F_ID,FINESTUDENT.S_ID, FINE.FineAmount,FINE.FineDate from FINE,FINESTUDENT where FINESTUDENT.S_ID=%s and FINE.F_ID=FINESTUDENT.F_ID",(c,))
+		cur.execute("select FINESTUDENT.F_ID,FINESTUDENT.S_ID, FINE.FineAmount,FINE.FineDate from FINE,FINESTUDENT where FINESTUDENT.S_ID=%s and FINE.F_ID=FINESTUDENT.F_ID",(c,)) #Selects all records that match info entered and if records exists displays those
 		Label=Tk.Label(Frame,text=" View  Your  Fines ",bg="black",fg="white",bd=5).pack(side='top')
 		cols=("F:ID","S_ID","Amount","Date")
 		listBox = ttk.Treeview(Frame, columns=cols, show='headings')
@@ -1057,7 +1058,7 @@ def fines(frame,Frame,p1,root):
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 		Frame.mainloop()
 	
-def viewf(frame,root):
+def viewf(frame,root): #This fn with fines is used to display fines of a particular student. This fn in particular sets up a GUI form to get details
 	frame.withdraw()
         Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -1074,8 +1075,8 @@ def viewf(frame,root):
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
         Frame.mainloop()
 
-# addenqco() add enquirires or comments
-def addenqco(frame,root):
+#Add enquiries/comments to db
+def addenqco(frame,root): #This fn along with addenqcocode is used to add enquiries/comments to the db. This fn in particular sets up a GUI from to get details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -1101,7 +1102,7 @@ def addenqco(frame,root):
 	btn0.place(relx=0.5,rely=0.6,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def addenqcocode(current,prev,p1,p2,p3):
+def addenqcocode(current,prev,p1,p2,p3):  #This fn along with addenqco is used to add enquiries/comments to the db. This fn in particular gets details from fn above to run queries
 	with con: 
     		cur = con.cursor()
 		ec=p1.get()
@@ -1109,7 +1110,7 @@ def addenqcocode(current,prev,p1,p2,p3):
 		text=p3.get()	
 		try:	
 			if(ec!='' and sc!='' and text!=''):
-	   			cur.execute("INSERT INTO ENQSTUDENT (E_ID,S_ID) VALUES(%s,%s)",(int(ec),int(sc)))
+	   			cur.execute("INSERT INTO ENQSTUDENT (E_ID,S_ID) VALUES(%s,%s)",(int(ec),int(sc))) #Insert into db acc to data entered
 				cur.execute("INSERT INTO ENQCO (E_ID,Enqco) VALUES(%s,%s)",(int(ec),text))
 				label4=Tk.Label(current,text="Saved!",bg='black', fg='white')
 				label4.place(relx=0.28,rely=0.8,relwidth=0.45,relheight=0.05)
@@ -1118,15 +1119,16 @@ def addenqcocode(current,prev,p1,p2,p3):
 		except:
 			label4=Tk.Label(current,text="Failed! Check S_ID,E_ID,Text and try again!",bg='black', fg='white')
 			label4.place(relx=0.07,rely=0.8,relwidth=0.85,relheight=0.05)
-# viewbg() view books by genres
-def viewbg(frame,root):
+			
+# View all books ordered by genres
+def viewbg(frame,root): #This fn displays all books ordered alphabetically by genre
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800")
 	Frame.title("Books By Genre")
 	with con:
 	 	cur=con.cursor()
-	  	cur.execute("select GENRE.GenreName,BOOKS.B_ID,BOOKS.Title,BOOKS.Count from BOOKS,GENRE,GENREBOOK where GENRE.G_ID=GENREBOOK.G_ID and GENREBOOK.B_ID=BOOKS.B_ID group by GenreName,BOOKS.B_ID")
+	  	cur.execute("select GENRE.GenreName,BOOKS.B_ID,BOOKS.Title,BOOKS.Count from BOOKS,GENRE,GENREBOOK where GENRE.G_ID=GENREBOOK.G_ID and GENREBOOK.B_ID=BOOKS.B_ID group by GenreName,BOOKS.B_ID") #Query to select records alphabeticaaly by genre
 	  	Label=Tk.Label(Frame,text="Books by Genre categories",bg="black",fg="white",bd=5).pack(side='top')
 	  	cols=("Genre","B_ID","Title","Count")
 		listBox = ttk.Treeview(Frame, columns=cols, show='headings')
@@ -1147,14 +1149,15 @@ def viewbg(frame,root):
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 		Frame.mainloop() 
  
-def viewba(frame,root):
+#View all books ordered by author names
+def viewba(frame,root):  #This fn displays all books ordered alphabetically by author names
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
   	Frame.geometry("800x800")
   	Frame.title("Books By Author")
   	with con:
 	 	cur=con.cursor()
-	  	cur.execute("select AUTHOR.Name,BOOKS.B_ID,BOOKS.Title,BOOKS.Count from BOOKS,AUTHOR where BOOKS.A_ID=AUTHOR.A_ID group by AUTHOR.Name,BOOKS.B_ID")
+	  	cur.execute("select AUTHOR.Name,BOOKS.B_ID,BOOKS.Title,BOOKS.Count from BOOKS,AUTHOR where BOOKS.A_ID=AUTHOR.A_ID group by AUTHOR.Name,BOOKS.B_ID") #Query to select records alphabeticaaly by authorname
 	  	Label=Tk.Label(Frame,text="Books by Author Names",bg="black",fg="white",bd=5).pack(side='top')
 	  	cols=("Author","B_ID","Title","Count")
 		listBox = ttk.Treeview(Frame, columns=cols, show='headings')
@@ -1176,7 +1179,8 @@ def viewba(frame,root):
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 		Frame.mainloop()  
 
-def addmemberinfo(frame,root):
+#Register personal info of students
+def addmemberinfo(frame,root): #This fn along with addmemberinfocode is used to add personal info of students to db. This fn in particular sets up a GUI form to get details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -1207,7 +1211,7 @@ def addmemberinfo(frame,root):
 	btn0.place(relx=0.5,rely=0.8,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def addmemberinfocode(current,prev,p1,p2,p3,p4):
+def addmemberinfocode(current,prev,p1,p2,p3,p4):  #This fn along with addmemberinfo is used to add personal info of students to db. This fn in particular gets details from fn above to run queries
 	with con: 
     		cur = con.cursor()
 		sc=p1.get()
@@ -1216,7 +1220,7 @@ def addmemberinfocode(current,prev,p1,p2,p3,p4):
 		e=p4.get()
 		try:
 			if(sc!='' and c!='' and p!='' and e!=''):
-				cur.execute("INSERT INTO PINFO VALUES(%s,%s,%s,%s)",(int(sc),c,int(p),e))
+				cur.execute("INSERT INTO PINFO VALUES(%s,%s,%s,%s)",(int(sc),c,int(p),e)) #Inserts acc to data entered
 				label4=Tk.Label(current,text="Saved",bg='black', fg='white')
 				label4.place(relx=0.28,rely=0.9,relwidth=0.45,relheight=0.05)
 			else:
@@ -1225,8 +1229,8 @@ def addmemberinfocode(current,prev,p1,p2,p3,p4):
 			label5=Tk.Label(current,text="Failed",bg='black', fg='white')
 			label5.place(relx=0.28,rely=0.9,relwidth=0.45,relheight=0.05)
 			
-
-def asearch(frame,Frame,p1,root):
+#Display books from a particular author
+def asearch(frame,Frame,p1,root):  #This fn along with searcha is used to display books acc to specified authorname. This fn in particular gets details from fn below to run queries
 	Frame.destroy()
     	Frame = Tk.Toplevel(bg="#000000",bd=5)
     	Frame.geometry("800x800") 
@@ -1234,7 +1238,7 @@ def asearch(frame,Frame,p1,root):
     	with con:
         	cur=con.cursor()
 	 	a=p1.get()
-	 	cur.execute("select AUTHOR.Name,BOOKS.B_ID,BOOKS.Title,BOOKS.Count from BOOKS,AUTHOR where BOOKS.A_ID=AUTHOR.A_ID and AUTHOR.NAME=%s",(a,))
+	 	cur.execute("select AUTHOR.Name,BOOKS.B_ID,BOOKS.Title,BOOKS.Count from BOOKS,AUTHOR where BOOKS.A_ID=AUTHOR.A_ID and AUTHOR.NAME=%s",(a,)) #Gets all records with given author name
 		Label=Tk.Label(Frame,text="STUDENT INFO ",bg="black",fg="white",bd=5).pack(side='top')
 		cols=("Author","B_ID","Title","Count")
 		listBox = ttk.Treeview(Frame, columns=cols, show='headings')
@@ -1255,7 +1259,7 @@ def asearch(frame,Frame,p1,root):
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 		Frame.mainloop()
 
-def searcha(frame,root):
+def searcha(frame,root): #This fn along with searcha is used to display books acc to specified authorname. This fn in particular sets up a GU form to get details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -1272,7 +1276,8 @@ def searcha(frame,root):
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
         Frame.mainloop()
 
-def tsearch(frame,Frame,p1,root):
+#Display books acc to specified title
+def tsearch(frame,Frame,p1,root): #This fn along with searcht is used to display books acc to specified title. This fn in particular gets details from fn below to run queries
 	Frame.destroy()
         Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800") 
@@ -1280,7 +1285,7 @@ def tsearch(frame,Frame,p1,root):
         with con:
         	cur=con.cursor()
 		b=p1.get()
-		cur.execute("select BOOKS.B_ID,BOOKS.Title,BOOKS.Count from BOOKS where BOOKS.Title=%s",(b,))
+		cur.execute("select BOOKS.B_ID,BOOKS.Title,BOOKS.Count from BOOKS where BOOKS.Title=%s",(b,)) #Selects records matching given data
 		Label=Tk.Label(Frame,text="BOOKS BY TITLE ",bg="black",fg="white",bd=5).pack(side='top')
 		cols=("B_ID","Title","Count")
 		listBox = ttk.Treeview(Frame, columns=cols, show='headings')
@@ -1301,7 +1306,7 @@ def tsearch(frame,Frame,p1,root):
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 		Frame.mainloop()
 		
-def searcht(frame,root):
+def searcht(frame,root): #This fn along with tsearch is used to display books acc to specified title. This fn in particular sets up a GUI from to get details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800")
@@ -1318,7 +1323,8 @@ def searcht(frame,root):
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 	Frame.mainloop()
 
-def gsearch(frame,Frame,p1,root):
+#Displays books acc to specified genrename
+def gsearch(frame,Frame,p1,root): #This fn along with searchg is used to display books acc to specified genrename. This fn in particular gets details from fn below to run queries
 	Frame.destroy()
         Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800") 
@@ -1326,7 +1332,7 @@ def gsearch(frame,Frame,p1,root):
         with con:
         	cur=con.cursor()
 		g=p1.get()
-		cur.execute("select BOOKS.B_ID,BOOKS.Title,BOOKS.Count, GENRE.GenreName from BOOKS,GENRE,GENREBOOK where BOOKS.B_ID=GENREBOOK.B_ID and GENREBOOK.G_ID=GENRE.G_ID and GENRE.GenreName=%s",(g,))
+		cur.execute("select BOOKS.B_ID,BOOKS.Title,BOOKS.Count, GENRE.GenreName from BOOKS,GENRE,GENREBOOK where BOOKS.B_ID=GENREBOOK.B_ID and GENREBOOK.G_ID=GENRE.G_ID and GENRE.GenreName=%s",(g,)) #Gets records matching info
 		Label=Tk.Label(Frame,text="BOOKS BY GENRE ",bg="black",fg="white",bd=5).pack(side='top')
 		cols=("B_ID","Title","Count")
 		listBox = ttk.Treeview(Frame, columns=cols, show='headings')
@@ -1347,7 +1353,7 @@ def gsearch(frame,Frame,p1,root):
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 		Frame.mainloop()
 	
-def searchg(frame,root): 
+def searchg(frame,root): #This fn along with gsearch is used to display books acc to specified authorname. This fn in particular sets up a GUI form to get details
 	frame.withdraw()
         Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -1364,7 +1370,8 @@ def searchg(frame,root):
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
         Frame.mainloop()
 
-def updatea(frame,root):
+#Modify Author info
+def updatea(frame,root): #Ths fn along with updateacode is used to modify author details alreayd entered in db. This fn in particular sets up a GUI form to get modified details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -1395,7 +1402,7 @@ def updatea(frame,root):
 	btn0.place(relx=0.5,rely=0.8,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def updateacode(current,prev,p1,p2,p3,p4):
+def updateacode(current,prev,p1,p2,p3,p4): #Ths fn along with updatea is used to modify author details alreayd entered in db. This fn in particular gets details from above fn to run queries
 	with con:	    
     		cur = con.cursor()
     		n=p1.get()
@@ -1408,9 +1415,9 @@ def updateacode(current,prev,p1,p2,p3,p4):
 				try:		
 						if(Name!='' and DOB !='' and DOD!=''):	
 							if DOD=='NULL':
-								cur.execute("Update AUTHOR set Name=%s,DOB=%s,DOD=NULL where A_ID=%s",(Name,DOB,int(n)))
+								cur.execute("Update AUTHOR set Name=%s,DOB=%s,DOD=NULL where A_ID=%s",(Name,DOB,int(n))) #Query to update info when DOD is NULL
 							else:
-								cur.execute("Update AUTHOR set Name=%s,DOB=%s,DOD=%s where A_ID=%s",(Name,DOB,DOD,int(n)))				
+								cur.execute("Update AUTHOR set Name=%s,DOB=%s,DOD=%s where A_ID=%s",(Name,DOB,DOD,int(n)))#Same as above query but DOD is not NULL				
 							label4=Tk.Label(current,text="Updated!",bg='black', fg='white')
 							label4.place(relx=0.28,rely=0.95,relwidth=0.45,relheight=0.05)
 						else:
@@ -1428,7 +1435,8 @@ def updateacode(current,prev,p1,p2,p3,p4):
 			label4=Tk.Label(current,text="Failed! Check A_ID",bg='black', fg='white')
 			label4.place(relx=0.07,rely=0.95,relwidth=0.85,relheight=0.05)
 
-def updateb(frame,root):
+#Modify Books details
+def updateb(frame,root): #Ths fn along with updatebcode is used to modify book details already entered in db. This fn in particular sets up a GUI form to get modified details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -1464,7 +1472,7 @@ def updateb(frame,root):
 	btn0.place(relx=0.5,rely=0.75,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def updatebcode(current,prev,p0,p1,p2,p3,p4):
+def updatebcode(current,prev,p0,p1,p2,p3,p4): #Ths fn along with updateb is used to modify book details alreayd entered in db. This fn in particular gets details from fn above to run queries
 	with con:	    
     		cur = con.cursor()
     		n=p0.get()
@@ -1478,9 +1486,9 @@ def updatebcode(current,prev,p0,p1,p2,p3,p4):
 				try:
 					if(Title!='' and Price!='' and Count!='' and AuthorID!=''):		
 						if AuthorID=='NULL':
-							cur.execute("Update BOOKS set Title=%s,Price=%s,Count=%s,A_ID=NULL where B_ID=%s",(Title,int(Price),int(Count),int(n)))
+							cur.execute("Update BOOKS set Title=%s,Price=%s,Count=%s,A_ID=NULL where B_ID=%s",(Title,int(Price),int(Count),int(n))) #Query to update bookinfoif A_ID is null
 						else:
-							cur.execute("Update BOOKS set Title=%s,Price=%s,Count=%s,A_ID=%s where B_ID=%s",(Title,int(Price),int(Count),int(AuthorID),int(n)))	
+							cur.execute("Update BOOKS set Title=%s,Price=%s,Count=%s,A_ID=%s where B_ID=%s",(Title,int(Price),int(Count),int(AuthorID),int(n))) #Same as above query but A_ID is not NULL	
 						label5=Tk.Label(current,text="Updated!",bg='black', fg='white')
 						label5.place(relx=0.45,rely=0.9,relwidth=0.45,relheight=0.05) 
 					else:	
@@ -1496,7 +1504,8 @@ def updatebcode(current,prev,p0,p1,p2,p3,p4):
 			label5=Tk.Label(current,text="Failed! Check B_ID!",bg='black', fg='white')
 			label5.place(relx=0.07,rely=0.9,relwidth=0.85,relheight=0.05)  
 
-def updates(frame,root):
+#Modify Student Info-Personal and Administrative
+def updates(frame,root): #Ths fn along with updates1,updateascode is used to modify student details alreayd entered in db. This fn in particular sets up a GUI form to select which info is to be modified
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -1509,7 +1518,7 @@ def updates(frame,root):
 	btn.place(relx=0.48,rely=0.4)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def updates1(Frame,frame,n,root):
+def updates1(Frame,frame,n,root): #Ths fn along with updateacode is used to modify author details alreayd entered in db. This fn in particular sets up a GUI form to get modified details
 	if n==1:
 		Frame.withdraw()
 		Frame1 = Tk.Toplevel(bg="#000000",bd=5)
@@ -1566,18 +1575,19 @@ def updates1(Frame,frame,n,root):
 		btn0= Tk.Button(Frame1, text="Exit", command=lambda: onbuttonclick(Frame1,Frame))
 		btn0.place(relx=0.5,rely=0.8,relwidth=0.15,relheight=0.1)
 		Frame1.protocol("WM_DELETE_WINDOW", root.destroy)
-def updatescode(current,prev,menu,p1,p2,p3,p4,num):
+		
+def updatescode(current,prev,menu,p1,p2,p3,p4,num):#Ths fn along with updates,updates1 is used to modify student details alreayd entered in db. This fn in particular gets details from f above to run queries
 	with con:	
 		n=p1.get()   
     		if num==1:
 			try:
 				cur = con.cursor()
-				cur.execute("select * from STUDENT where S_ID = %s",(int(n),))
+				cur.execute("select * from STUDENT where S_ID = %s",(int(n),)) #Select admin details acc to info entered
 				if len(cur.fetchall())>0:
 					Name=p2.get()
 					Department=p3.get()
 					if(Name!='' and Department!=''):
-						cur.execute("Update STUDENT set Name=%s,Department=%s where S_ID=%s",(Name,Department,int(n)))
+						cur.execute("Update STUDENT set Name=%s,Department=%s where S_ID=%s",(Name,Department,int(n))) #Modifies acc to data given once a record is found
 						label5=Tk.Label(current,text="Updated!",bg='black', fg='white')
 						label5.place(relx=0.45,rely=0.85,relwidth=0.15,relheight=0.05)  
 					else:
@@ -1592,13 +1602,13 @@ def updatescode(current,prev,menu,p1,p2,p3,p4,num):
 		elif num==2:
 			try:
 				cur = con.cursor()
-				cur.execute("select * from PINFO where S_ID = %s",(int(n),))
+				cur.execute("select * from PINFO where S_ID = %s",(int(n),))  #Select personal details acc to info entered
 				if len(cur.fetchall()) > 0:
 					c=p2.get()
 					p=p3.get()
 					e=p4.get()	
 					if(c!='' and p!='' and e!=''):
-						cur.execute("Update PINFO set City=%s,Phone=%s,Email=%s where S_ID=%s",(c,int(p),e,int(n)))
+						cur.execute("Update PINFO set City=%s,Phone=%s,Email=%s where S_ID=%s",(c,int(p),e,int(n))) #Modifies acc to data given once a record is found
 						label5=Tk.Label(current,text="Updated!",bg='black', fg='white')
 						label5.place(relx=0.45,rely=0.9,relwidth=0.15,relheight=0.05)  
 					else:
