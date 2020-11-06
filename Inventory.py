@@ -10,7 +10,7 @@ def onbuttonclick(current,prev):
 	prev.deiconify()
 
 #Registration Students
-def registerstudents(frame,root):
+def registerstudents(frame,root): #This fn along with registerstudentcode is for registering students. This fn is to set up the GUI of the form.
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -36,7 +36,7 @@ def registerstudents(frame,root):
 	btn0.place(relx=0.5,rely=0.6,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def registerstudentscode(current,prev,p1,p2,p3):
+def registerstudentscode(current,prev,p1,p2,p3): #This fn along with registerstudents is for registering students. This fn is to take data from above fn and run the sql query.
 	with con: 
     		cur = con.cursor()
 		ID=p1.get()
@@ -46,7 +46,7 @@ def registerstudentscode(current,prev,p1,p2,p3):
 		print(Department)
 		try:
 			if(Name!='' and Department!=''):
-			   	cur.execute("INSERT INTO STUDENT VALUES(%s,%s,%s)",(int(ID),Name,Department))
+			   	cur.execute("INSERT INTO STUDENT VALUES(%s,%s,%s)",(int(ID),Name,Department)) #Takes data and inserts in STUDENT table
 				label4=Tk.Label(current,text="Saved",bg='black', fg='white')
 				label4.place(relx=0.45,rely=0.85,relwidth=0.15,relheight=0.1)
 			else:
@@ -56,7 +56,7 @@ def registerstudentscode(current,prev,p1,p2,p3):
 			label4.place(relx=0.45,rely=0.85,relwidth=0.15,relheight=0.1)
 
 #Adding Books
-def addbooks(frame,root): 
+def addbooks(frame,root):  #This fn along with addbookscodecode is for adding books to library. This fn is to set up the GUI of the form to collect data
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -89,7 +89,7 @@ def addbooks(frame,root):
 	btn0.place(relx=0.5,rely=0.8,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def addbookscode(current,prev,p1,p2,p3,p4):
+def addbookscode(current,prev,p1,p2,p3,p4): #This fn along with addbooks is adding books into the library. This fn takes data from fn above and runs the sql query 
 	with con:	    
     		cur = con.cursor()
 		Title=p1.get()
@@ -99,10 +99,10 @@ def addbookscode(current,prev,p1,p2,p3,p4):
 		try:
 			if(Title!='' and Price!='' and Count!='' and Author!=''):
 				if AuthorID=='NULL':
-					cur.execute("INSERT INTO BOOKS (Title,Price,Count,A_ID) VALUES(%s,%s,%s,NULL)",(Title,int(Price),int(Count)))   
+					cur.execute("INSERT INTO BOOKS (Title,Price,Count,A_ID) VALUES(%s,%s,%s,NULL)",(Title,int(Price),int(Count))) #Query for if A_ID is NULL 
 				else:
 				   	cur.execute("INSERT INTO BOOKS (Title,Price,Count,A_ID) VALUES(%s,%s,%s,%s)",
-	(Title,int(Price),int(Count),int(AuthorID)))
+	(Title,int(Price),int(Count),int(AuthorID))) #Query for if A_ID is given
 				label4=Tk.Label(current,text="Saved",bg='black', fg='white')
 				label4.place(relx=0.45,rely=0.94,relwidth=0.15,relheight=0.1)
 			else:
@@ -113,14 +113,14 @@ def addbookscode(current,prev,p1,p2,p3,p4):
     
  
 #Student Display Table**********
-def displays(frame,root):
+def displays(frame,root):  #This fn displays results of sql query to display all students in a table 
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800")
 	Frame.title("Display Students")
 	with con:
 		cur=con.cursor()
-	  	cur.execute("select * from STUDENT")
+	  	cur.execute("select * from STUDENT") #Selects all registered students
 	  	Label=Tk.Label(Frame,text="View All Students",bg="black",fg="white").pack(side='top')
 		cols = ('MIS:ID', 'Name', 'Department')
 		listBox = ttk.Treeview(Frame, columns=cols, show='headings')
@@ -140,8 +140,9 @@ def displays(frame,root):
 		btn = Tk.Button(Frame, text="Exit", command=lambda: onbuttonclick(Frame,frame)).pack()
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 		Frame.mainloop()
+		
 #Replenish book stock
-def replenish(frame,root):
+def replenish(frame,root): #This fn along with replenishcode allows staff to update book count once new books are ordered. This fn inparticular sets up a gui form to collect details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -162,7 +163,7 @@ def replenish(frame,root):
 	btn0.place(relx=0.5,rely=0.4,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def replenishcode(current,prev,p1,p2):
+def replenishcode(current,prev,p1,p2):  #This fn along with replenish allows staff to update book count. Takes data from prev fn to run queries
 	bc=p1.get()
 	n=p2.get()
     	with con:
@@ -172,7 +173,7 @@ def replenishcode(current,prev,p1,p2):
 		    		cur.execute("select B_ID from BOOKS where B_ID=%s",(bc,))
 		    		rows = cur.fetchall()
 		    		if(rows):
-				  	cur.execute("UPDATE BOOKS SET Count = Count+%s WHERE B_Id = %s ",(n,bc))
+				  	cur.execute("UPDATE BOOKS SET Count = Count+%s WHERE B_Id = %s ",(n,bc)) #Updates book count by adding new count of books
 					label2=Tk.Label(current,text="Saved",bg='black', fg='white')
 					label2.place(relx=0.43,rely=0.6,relwidth=0.15,relheight=0.1)
 				else:
@@ -184,8 +185,8 @@ def replenishcode(current,prev,p1,p2):
 			label2=Tk.Label(current,text="Failed!",bg='black', fg='white')
 			label2.place(relx=0.43,rely=0.6,relwidth=0.15,relheight=0.1)
 
-#Student Display Table Classwise**********
-def displsc(frame,Frame,p1,root):
+#Student Display Table Deptwise**********
+def displsc(frame,Frame,p1,root): #This fn along with displaysc displays students acc to department in a table. Gets data from fn below to run query and display
 	Frame.destroy()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800")
@@ -193,7 +194,7 @@ def displsc(frame,Frame,p1,root):
 	with con:
 		cur=con.cursor()
 		c=p1.get()
-		cur.execute("select * from STUDENT where Department=%s",(c,))
+		cur.execute("select * from STUDENT where Department=%s",(c,)) #Query to select all students of a particular dept.
 		Label=Tk.Label(Frame,text="STUDENTS IN A BRANCH ",bg="black",fg="white",bd=5).pack(side='top')
 		cols = ('MIS:ID', 'Name', 'Department')
 		listBox = ttk.Treeview(Frame, columns=cols, show='headings')
@@ -213,7 +214,8 @@ def displsc(frame,Frame,p1,root):
 		btn = Tk.Button(Frame, text="Exit", command=lambda: onbuttonclick(Frame,frame)).pack()
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 		Frame.mainloop()
-def displaysc(frame,root):
+		
+def displaysc(frame,root):  #This fn along with displsc displays students acc to department in a table. This fn in particular sets up a GUI form to collect details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800")
@@ -231,7 +233,7 @@ def displaysc(frame,root):
         Frame.mainloop()
 
 #Deleting Students
-def deletestudents(frame,root):
+def deletestudents(frame,root): #This fn along with deletestudents1, deletestudentcode deletes students from database. This fn in particular sets up a GUI form to get confirmation before proceeding
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -246,7 +248,7 @@ def deletestudents(frame,root):
 	btn1.place(relx=0.5,rely=0.25,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def deletestudents1(Frame,frame,root):
+def deletestudents1(Frame,frame,root):  #Ths fn along with deletestudents, deletestudentcode deletes students from database. This fn in particular sets up a GUI form to get data
 	Frame.withdraw()
 	Frame1 = Tk.Toplevel(bg="#000000",bd=5)
         Frame1.geometry("800x800")
@@ -262,7 +264,7 @@ def deletestudents1(Frame,frame,root):
 	btn0.place(relx=0.5,rely=0.25,relwidth=0.15,relheight=0.1)
 	Frame1.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def deletestudentscode(curr,conf,prev,p1):
+def deletestudentscode(curr,conf,prev,p1):  #Ths fn along with deletestudents1, deletestudent deletes students from database. This fn in particular gets details from above fn to run the sql query.
     	with con:
 	    	cur=con.cursor()
 	    	try:
@@ -270,7 +272,7 @@ def deletestudentscode(curr,conf,prev,p1):
 		    	cur.execute("select S_ID from STUDENT where S_ID=%s",(bc,))
 		    	rows = cur.fetchall()
 		    	if(rows):
-				sql_Delete_query = "Delete from STUDENT where S_ID = %s"
+				sql_Delete_query = "Delete from STUDENT where S_ID = %s" #Query to find students with particular ID to delete
 			   	cur.execute(sql_Delete_query, (bc,))
 				label2=Tk.Label(curr,text="Deleted Successfully",bg='black', fg='white')
 				label2.place(relx=0.43,rely=0.55,relwidth=0.15,relheight=0.1)
@@ -282,7 +284,7 @@ def deletestudentscode(curr,conf,prev,p1):
 			label2.place(relx=0.43,rely=0.55,relwidth=0.15,relheight=0.1)
 
 #Deleting Books
-def delbooks(frame,root):
+def delbooks(frame,root):  #This fn along with delbooks1, delbookscode deletes books from database. This fn in particular sets up a GUI form to get confirmation before proceeding
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -297,7 +299,7 @@ def delbooks(frame,root):
 	btn1.place(relx=0.5,rely=0.25,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def delbooks1(Frame,frame,root):
+def delbooks1(Frame,frame,root):  #Ths fn along with delbooks, delbookstcode deletes books from database. This fn in particular sets up a GUI form to get details
 	Frame.withdraw()
 	Frame1 = Tk.Toplevel(bg="#000000",bd=5)
         Frame1.geometry("800x800")
@@ -313,14 +315,14 @@ def delbooks1(Frame,frame,root):
 	btn0.place(relx=0.5,rely=0.25,relwidth=0.15,relheight=0.1)
 	Frame1.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def delbookscode(curr,conf,prev,p1):
+def delbookscode(curr,conf,prev,p1):  #This fn along with delbooks1, delbooks deletes books from database. This fn in particular takes data from fn above to run query
 	flag=0
     	with con:
     		cur=con.cursor()
 	    	try:
 	    		if(p1.get!=''):
 		    		bc=int(p1.get())
-		    		cur.execute("select B_ID from BOOKS where B_ID=%s",(bc,))
+		    		cur.execute("select B_ID from BOOKS where B_ID=%s",(bc,)) #Query to select books with particular ID and delete them
 		    		rows = cur.fetchall()
 		    		if(rows):
 				   	sql_Delete_query = "Delete from BOOKS where B_ID = %s"
@@ -338,7 +340,7 @@ def delbookscode(curr,conf,prev,p1):
 
 
 #View your books  
-def viewlog(frame,Frame,p1,root):
+def viewlog(frame,Frame,p1,root):  #This fn along with viewlog1 is used to view your personal book log.This fn is particular gets details from fn below to run query
 	Frame.destroy()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800")
@@ -346,7 +348,7 @@ def viewlog(frame,Frame,p1,root):
 	with con:
 		cur=con.cursor()
 	 	k=p1.get()
-	 	cur.execute("select BOOKS.B_ID,BOOKS.Title,BOOKS.Price,BOOKS.A_ID,ISSUED.Issuedate from BOOKS,ISSUED where BOOKS.B_ID=ISSUED.B_ID  and ISSUED.S_ID=%s",(k,))
+	 	cur.execute("select BOOKS.B_ID,BOOKS.Title,BOOKS.Price,BOOKS.A_ID,ISSUED.Issuedate from BOOKS,ISSUED where BOOKS.B_ID=ISSUED.B_ID  and ISSUED.S_ID=%s",(k,)) #Selects all books associated with a particular student id
 	 	Label=Tk.Label(Frame,text="Books Borrowed By You ",bg="black",fg="white",bd=5).pack(side='top')
 		cols = ('BookID','Title','Price','AuthorID','Issued')
 		listBox = ttk.Treeview(Frame, columns=cols, show='headings')
@@ -367,8 +369,7 @@ def viewlog(frame,Frame,p1,root):
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 	 	Frame.mainloop()
 
-#View your books  
-def viewlog1(frame,root):
+def viewlog1(frame,root): #This fn along with viewlog is used to view your personal book log.This fn is particular sets up a GUI form to get details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800")
@@ -386,14 +387,14 @@ def viewlog1(frame,root):
         Frame.mainloop()
 
 #Book Display Table
-def displayb(frame,root):
+def displayb(frame,root): #This fn is used to display all books available in db in a table.
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800")
 	Frame.title("Display Books")
 	with con:
 	 	cur=con.cursor()
-	  	cur.execute("select * from BOOKS")
+	  	cur.execute("select * from BOOKS") #Query to select all books in db
 	  	#Label=Tk.Label(Frame,text="View All Books",bg="black",fg="white",bd=5).grid(row=0,columnspan=2)
 		Label=Tk.Label(Frame,text="View All Books",bg="black",fg="white",bd=5).pack(side='top')
 	  	cols=("BID","Title","Price","Count","AuthorID")
@@ -415,7 +416,7 @@ def displayb(frame,root):
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)	
 		Frame.mainloop()
 #Issue books                 
-def issueb(frame,root):
+def issueb(frame,root): #This fn along with issuebcode is used to issue books. This fn is particular sets up a GUI form to get details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -436,14 +437,14 @@ def issueb(frame,root):
 	btn0.place(relx=0.5,rely=0.45,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def issuebcode(current,prev,p1,p2):
+def issuebcode(current,prev,p1,p2): #This fn along with issueb is used to issue books.This fn is particular gets details from fn above to run query
 	rn=p1.get()
 	bc=p2.get()
     	today = date.today()
     	with con:
 		try:    
     			cur = con.cursor()
-        		cur.execute("select * from STUDENT where S_ID = %s",(int(rn),))
+        		cur.execute("select * from STUDENT where S_ID = %s",(int(rn),)) #Query to select books with entered bookcode
 			if len(cur.fetchall()) > 0:
 				cur.execute("select * from BOOKS where B_ID=%s and Count>=1",(int(bc),))
 				if len(cur.fetchall()) > 0:
@@ -462,7 +463,7 @@ def issuebcode(current,prev,p1,p2):
 			label3.place(relx=0.43,rely=0.7,relwidth=0.15,relheight=0.1)
 
 #Returning Books
-def returnb(frame,root):
+def returnb(frame,root): #This fn along with returnbcode is used to return books.This fn is particular sets up a GUI form to get details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -483,16 +484,16 @@ def returnb(frame,root):
 	btn0.place(relx=0.5,rely=0.45,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def returnbcode(current,prev,p1,p2):
+def returnbcode(current,prev,p1,p2): #This fn along with returnb is used to return books.This fn is particular gets details from fn above to run query
 	rn=p1.get()
 	bc=p2.get()
     	with con:
 		try:		    
     			cur = con.cursor()
-    		    	cur.execute("select * from ISSUED where B_ID = %s and S_ID=%s",(int(bc),int(rn)))
+    		    	cur.execute("select * from ISSUED where B_ID = %s and S_ID=%s",(int(bc),int(rn))) #Selects details from issued table where bookid and studentid match
 			if len(cur.fetchall()) > 0:
-				cur.execute("Update BOOKS set Count=Count+1 where B_ID=%s",(int(bc),))
-				cur.execute("Delete from ISSUED where B_ID = %s and S_ID=%s",(int(bc),int(rn)))
+				cur.execute("Update BOOKS set Count=Count+1 where B_ID=%s",(int(bc),)) #Once a matching book is found it updates count as book is returned
+				cur.execute("Delete from ISSUED where B_ID = %s and S_ID=%s",(int(bc),int(rn))) #Deletes record of borrowing from logs
 				label3=Tk.Label(current,text="Success",bg='black', fg='white')
 				label3.place(relx=0.43,rely=0.7,relwidth=0.15,relheight=0.1)
 			else:
@@ -503,7 +504,7 @@ def returnbcode(current,prev,p1,p2):
 			label3.place(relx=0.07,rely=0.7,relwidth=0.85,relheight=0.1)
 
 #Lost Books
-def lostb(frame,root):
+def lostb(frame,root): #This fn along with lostbcode is used to report lost books. This fn is particular sets up a GUI form to get details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -524,7 +525,7 @@ def lostb(frame,root):
 	btn0.place(relx=0.5,rely=0.45,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def lostbcode(current,prev,p1,p2):
+def lostbcode(current,prev,p1,p2): #This fn along with lostb is used to report lost books. This fn is particular gets details from above fn and runs query
     	rn=p1.get()
     	bc=p2.get()
    	today = date.today()
@@ -532,13 +533,13 @@ def lostbcode(current,prev,p1,p2):
 		try:	    
 			if(rn!='' and bc!=''):
 	   			cur = con.cursor()
-	       			cur.execute("select * from ISSUED where B_ID = %s and S_ID=%s",(int(bc),int(rn)))
+	       			cur.execute("select * from ISSUED where B_ID = %s and S_ID=%s",(int(bc),int(rn))) #selects all records where student has borrowed the book
 				if len(cur.fetchall()) > 0:
-					cur.execute("Delete from ISSUED where B_ID = %s and S_ID=%s",(int(bc),int(rn)))
-					cur.execute("Select Price from BOOKS where B_ID=%s",(int(bc),))
+					cur.execute("Delete from ISSUED where B_ID = %s and S_ID=%s",(int(bc),int(rn))) #Deletes only if record of borrowing exists
+					cur.execute("Select Price from BOOKS where B_ID=%s",(int(bc),)) #Gets costprie of book to calculate fine
 					p=cur.fetchall()
-					cur.execute("INSERT INTO FINESTUDENT (S_ID) VALUES(%s)",(int(rn),))
-					cur.execute("INSERT INTO FINE (FineAmount,FineDate) VALUES(%s,%s)",(p,today))
+					cur.execute("INSERT INTO FINESTUDENT (S_ID) VALUES(%s)",(int(rn),)) #Adds student ID to fine table
+					cur.execute("INSERT INTO FINE (FineAmount,FineDate) VALUES(%s,%s)",(p,today)) #Also adds calculated fine anount along with current date
 					string="Fine added! Your fine is "+str(p[0][0])+". Inform staff for payment" 
 					label3=Tk.Label(current,text=string,bg='black', fg='white')
 					label3.place(relx=0.07,rely=0.7,relwidth=0.85,relheight=0.1)
@@ -555,8 +556,9 @@ def lostbcode(current,prev,p1,p2):
 		except:
 			label3=Tk.Label(current,text="Failed",bg='black', fg='white')
 			label3.place(relx=0.43,rely=0.7,relwidth=0.15,relheight=0.1)
+			
 # Add authors addauth()
-def addauth(frame,root):
+def addauth(frame,root): #This fn along with addauthcode is used to add authors in databse. This fn is particular sets up a GUI form to get data
         frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -581,7 +583,8 @@ def addauth(frame,root):
 	btn0= Tk.Button(Frame, text="Exit", command=lambda: onbuttonclick(Frame,frame))
 	btn0.place(relx=0.5,rely=0.65,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
-def addauthcode(current,prev,p1,p2,p3):
+	
+def addauthcode(current,prev,p1,p2,p3): #This fn along with addauth is used to add authors in databse. This fn is particular gets data from above fn to run query
 	with con:	
     		cur = con.cursor()
 		Name=p1.get()
@@ -590,9 +593,9 @@ def addauthcode(current,prev,p1,p2,p3):
 		try:
 			if(Name!='' and DOB !='' and DOD !=''):
 				if DOD=='NULL':
-					cur.execute("INSERT INTO AUTHOR(Name,DOB,DOD) VALUES(%s,%s,NULL)",(Name,DOB))
+					cur.execute("INSERT INTO AUTHOR(Name,DOB,DOD) VALUES(%s,%s,NULL)",(Name,DOB)) #Runs this qeruy if DOD is NULL
 				else:
-			   		cur.execute("INSERT INTO AUTHOR(Name,DOB,DOD) VALUES(%s,%s,%s)",(Name,DOB,DOD))
+			   		cur.execute("INSERT INTO AUTHOR(Name,DOB,DOD) VALUES(%s,%s,%s)",(Name,DOB,DOD)) #Runs this query if DOD is not NULL
 				label4=Tk.Label(current,text="Saved!",bg='black', fg='white')
 				label4.place(relx=0.43,rely=0.85,relwidth=0.15,relheight=0.1)
 			else:
@@ -600,8 +603,9 @@ def addauthcode(current,prev,p1,p2,p3):
 		except:
 			label4=Tk.Label(current,text="Failed",bg='black', fg='white')
 			label4.place(relx=0.43,rely=0.85,relwidth=0.15,relheight=0.1)
-
-def addgencat(frame,root): 
+			
+#Add Genre categories
+def addgencat(frame,root): #This fn along with addgencatcode is used to add book genres in databse. This fn is particular sets up a GUI form to get data
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -622,14 +626,14 @@ def addgencat(frame,root):
 	btn0.place(relx=0.5,rely=0.45,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def addgencatcode(current,prev,p1,p2):
+def addgencatcode(current,prev,p1,p2):  #This fn along with addgencatcode is used to add book genres in databse. This fn is particular gets the data from above fn to run query
 	with con:	    
     		cur = con.cursor()
 		GID=p1.get()
 		GName=p2.get()	
 		try:
 			if(GID!='' and GName!=''):
-			   	cur.execute("INSERT INTO GENRE(G_ID,GenreName) VALUES(%s,%s)",(int(GID),GName))
+			   	cur.execute("INSERT INTO GENRE(G_ID,GenreName) VALUES(%s,%s)",(int(GID),GName)) #Add data to GENRE table
 				label3=Tk.Label(current,text="Saved",bg='black', fg='white')
 				label3.place(relx=0.28,rely=0.65,relwidth=0.45,relheight=0.05)
 			else:
@@ -639,7 +643,7 @@ def addgencatcode(current,prev,p1,p2):
 			label3.place(relx=0.28,rely=0.65,relwidth=0.45,relheight=0.05)
 
 # delete authors
-def delauth(frame,root):
+def delauth(frame,root):  #This fn along with delauth1, delauthcode is used to delete authors from databse. This fn is particular sets up a GUI form to get confirmation of action
     	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -654,7 +658,7 @@ def delauth(frame,root):
         btn1.place(relx=0.5,rely=0.25,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def delauth1(Frame,frame,root):
+def delauth1(Frame,frame,root): #This fn along with delauth, delauthcode is used to delete authors from databse. This fn is particular sets up a GUI form to get details
 	Frame.withdraw()
 	Frame1 = Tk.Toplevel(bg="#000000",bd=5)
         Frame1.geometry("800x800")
@@ -670,16 +674,16 @@ def delauth1(Frame,frame,root):
 	btn0.place(relx=0.5,rely=0.25,relwidth=0.15,relheight=0.1)
 	Frame1.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def delauthcode(curr,conf,prev,p1):
+def delauthcode(curr,conf,prev,p1): #This fn along with delauth, delauth1 is used to delete authors from databse. This fn is particular gets details from fn above to run queries
 	with con:
 		cur=con.cursor()
 	    	try:
 	    		if(p1.get()!=''):
 			    	ac=int(p1.get())
-			    	cur.execute("select A_ID from AUTHOR where A_ID=%s",(ac,))
+			    	cur.execute("select A_ID from AUTHOR where A_ID=%s",(ac,)) #Gets records from table of authors acc to details given
 			    	rows = cur.fetchall()
 			    	if(rows):
-					sql_Delete_query = "Delete from AUTHOR where A_ID = %s"
+					sql_Delete_query = "Delete from AUTHOR where A_ID = %s" #Deletes those records if they exist
 			   		cur.execute(sql_Delete_query, (ac,))
 					label2=Tk.Label(curr,text="Deleted !",bg='black', fg='white')
 					label2.place(relx=0.28,rely=0.45,relwidth=0.45,relheight=0.05)
@@ -692,8 +696,8 @@ def delauthcode(curr,conf,prev,p1):
 	   		label2=Tk.Label(curr,text="Failed!",bg='black', fg='white')
 			label2.place(relx=0.28,rely=0.45,relwidth=0.45,relheight=0.05)
 
-# add genres
-def addgenre(frame,root):
+# Attach Genres to Books
+def addgenre(frame,root): #This fn along with addgenrecode is used to attach genres to books. This fn is particular sets up a GUI form to get details
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -714,18 +718,18 @@ def addgenre(frame,root):
 	btn0.place(relx=0.5,rely=0.45,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def addgenrecode(current,prev,p1,p2):
+def addgenrecode(current,prev,p1,p2):  #This fn along with addgenrecode is used to attach genres to books. This fn is particular gets details from fn above to run query
 	with con: 
     		cur = con.cursor()
 		bc=p1.get()
 		gn=p2.get()
 		try:
 			if(bc!='' and gn !=''):
-				cur.execute("Select G_ID from GENRE where GenreName=%s",(gn,))
+				cur.execute("Select G_ID from GENRE where GenreName=%s",(gn,)) #Gets genrecode of genre entered
 				p=cur.fetchall()
 				if len(p)>0:
 					try:	
-	   					cur.execute("INSERT INTO GENREBOOK VALUES(%s,%s)",(p,int(bc)))
+	   					cur.execute("INSERT INTO GENREBOOK VALUES(%s,%s)",(p,int(bc))) #attaches that code to book if both exist
 						label2=Tk.Label(current,text="Saved!",bg='black', fg='white')
 						label2.place(relx=0.28,rely=0.65,relwidth=0.45,relheight=0.05)
 					except:
@@ -740,8 +744,8 @@ def addgenrecode(current,prev,p1,p2):
 			label2=Tk.Label(current,text="Failed!",bg='black', fg='white')
 			label2.place(relx=0.28,rely=0.65,relwidth=0.45,relheight=0.05)
 
-#Deleting Genre
-def delgen(frame,root):
+#Deleting Genre from database
+def delgen(frame,root):  #This fn along with delgen1, delgencode is used to delete genres from db. This fn is particular sets up a GUI form to get confirmation to proceed forward
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
@@ -757,7 +761,7 @@ def delgen(frame,root):
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 
 
-def delgen1(Frame,frame,root):
+def delgen1(Frame,frame,root):  #This fn along with delgen, delgencode is used to delete genres from db. This fn is particular sets up a GUI form to get details
 	Frame.withdraw()
 	Frame1 = Tk.Toplevel(bg="#000000",bd=5)
         Frame1.geometry("800x800")
@@ -773,17 +777,17 @@ def delgen1(Frame,frame,root):
 	btn0.place(relx=0.5,rely=0.25,relwidth=0.15,relheight=0.1)
 	Frame1.protocol("WM_DELETE_WINDOW", root.destroy)
 
-def delgencode(curr,conf,prev,p1):
+def delgencode(curr,conf,prev,p1): #This fn along with delgen, delgen1 is used to delete genres from db. This fn is particular gets details from fn above to run queries
     	with con:
     		cur=con.cursor()
 	    	try:
 	    	
 	    		gc=p1.get()
 	    		if(gc!=''):
-		    		cur.execute("select G_ID from GENRE where GenreName=%s",(gc,))
+		    		cur.execute("select G_ID from GENRE where GenreName=%s",(gc,)) #Selects records having entered GID
 		    		rows = cur.fetchall()
 		    		if(rows):
-				   	sql_Delete_query = "Delete from GENRE where GenreName = %s"
+				   	sql_Delete_query = "Delete from GENRE where GenreName = %s" #Deletes from database if ID entered exists
 				   	cur.execute(sql_Delete_query, (gc,))
 					label2=Tk.Label(curr,text="Deleted!",bg='black', fg='white')
 					label2.place(relx=0.28,rely=0.45,relwidth=0.45,relheight=0.05)
@@ -796,18 +800,18 @@ def delgencode(curr,conf,prev,p1):
 			label2=Tk.Label(curr,text="Failed!",bg='black', fg='white')
 			label2.place(relx=0.28,rely=0.45,relwidth=0.45,relheight=0.05)   
 
-# viewenq and coms
-def enquery(prev,curr,p1,p11):
+#View/Delete enquiries and comments added
+def enquery(prev,curr,p1,p11):  #This fn along with enqco,viewenqco is used to view and delete enquiries/comments from db. This fn is particular gets details from fn below to run queries
 	with con:
 		cur=con.cursor()
 	    	try:
 		    	ec=p1.get()
 			sc=p11.get()
 			if(ec!='' and sc!=''):
-			    	cur.execute("select * from ENQSTUDENT where E_ID = %s and S_ID=%s",(ec,sc))
+			    	cur.execute("select * from ENQSTUDENT where E_ID = %s and S_ID=%s",(ec,sc)) #Selects all enquiries from table whcih match wth data entered
 			    	rows = cur.fetchall()
 			    	if(rows):
-					sql_Delete_query = "Delete from ENQSTUDENT where E_ID = %s and S_ID=%s"
+					sql_Delete_query = "Delete from ENQSTUDENT where E_ID = %s and S_ID=%s" #If records exists then deletes from table
 			   		cur.execute(sql_Delete_query, (ec,sc))
 					label2=Tk.Label(curr,text="Deleted successfully!",bg='black', fg='white')
 					label2.place(relx=0.28,rely=0.75,relwidth=0.45,relheight=0.05)
@@ -820,7 +824,7 @@ def enquery(prev,curr,p1,p11):
 	   		label2=Tk.Label(curr,text="Failed!",bg='black', fg='white')
 			label2.place(relx=0.28,rely=0.75,relwidth=0.45,relheight=0.05)
 	
-def enqco(frame,Frame,root):
+def enqco(frame,Frame,root):  #This fn along with enquery, viewenqco is used to view and delete enquiries/comments from db. This fn is particular sets up a GUI from to get details to delete 
 	Frame.destroy()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800") 
@@ -841,15 +845,15 @@ def enqco(frame,Frame,root):
 	btn.place(relx=0.5,rely=0.55,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 	Frame.mainloop()
-# viewenq and coms
-def viewenqco(frame,root):
+	
+def viewenqco(frame,root): #This fn along with enquery, enqco is used to view and delete enquiries/comments from db. This fn is particular selects all records in Enquirytable and diplays n a table 
     frame.withdraw()
     Frame = Tk.Toplevel(bg="#000000",bd=5)
     Frame.geometry("800x800")
     Frame.title("Display All Enquires/Comments")
     with con:
      	cur=con.cursor()
-	cur.execute("select ENQSTUDENT.E_ID,ENQSTUDENT.S_ID,ENQCO.Enqco from ENQCO,ENQSTUDENT where ENQCO.E_ID=ENQSTUDENT.E_ID")
+	cur.execute("select ENQSTUDENT.E_ID,ENQSTUDENT.S_ID,ENQCO.Enqco from ENQCO,ENQSTUDENT where ENQCO.E_ID=ENQSTUDENT.E_ID") #Selects all record of table to display
 	Label=Tk.Label(Frame,text="View All Enquires and Comments",bg="black",fg="white",bd=5).pack(side='top')
 	cols=("E:ID","S:ID","Text")
 	listBox = ttk.Treeview(Frame, columns=cols, show='headings')
@@ -873,17 +877,17 @@ def viewenqco(frame,root):
 	Frame.mainloop()
 
 # View and clear fines paid()
-def findel(prev,curr,p1,p11):
+def findel(prev,curr,p1,p11): #This fn along with finepay, finepaid is used to view and delete paid fines from db. This fn is gets details from fn below to run queries
 	with con:
 		cur=con.cursor()
 	    	try:
 		    	fc=p1.get()
 			sc=p11.get()
 			if(fc!='' and sc!=''):
-			    	cur.execute("select * from FINESTUDENT where F_ID = %s and S_ID=%s",(fc,sc))
+			    	cur.execute("select * from FINESTUDENT where F_ID = %s and S_ID=%s",(fc,sc)) #Gets record that match info entered
 			    	rows = cur.fetchall()
 			    	if(rows):
-					sql_Delete_query = "Delete from FINESTUDENT where F_ID = %s and S_ID=%s"
+					sql_Delete_query = "Delete from FINESTUDENT where F_ID = %s and S_ID=%s" #Deletes if records exist
 			   		cur.execute(sql_Delete_query, (fc,sc))
 					label2=Tk.Label(curr,text="Deleted!",bg='black', fg='white')
 					label2.place(relx=0.28,rely=0.75,relwidth=0.45,relheight=0.05)
@@ -895,7 +899,7 @@ def findel(prev,curr,p1,p11):
 		except:
 	   		label2=Tk.Label(curr,text="Failed!",bg='black', fg='white')
 			label2.place(relx=0.28,rely=0.75,relwidth=0.45,relheight=0.05)
-def finepay(frame,Frame,root):
+def finepay(frame,Frame,root): #This fn along with findel, finepaid is used to view and delete paid fines from db. This fn is particular sets up a GUI from to get details to delete 
 	Frame.destroy()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800") 
@@ -917,14 +921,14 @@ def finepay(frame,Frame,root):
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 	Frame.mainloop()
 	
-def finepaid(frame,root):
+def finepaid(frame,root):  #This fn along with finepay, findel is used to view and delete paid fines from db. This fn is particular displays all fines in a table 
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
         Frame.geometry("800x800")
         Frame.title("Display All Fines")
         with con:
 	     	cur=con.cursor()
-		cur.execute("select FINE.F_ID,FINESTUDENT.S_ID,FINE.FineAmount,FINE.FineDate from FINE,FINESTUDENT where FINE.F_ID=FINESTUDENT.F_ID")
+		cur.execute("select FINE.F_ID,FINESTUDENT.S_ID,FINE.FineAmount,FINE.FineDate from FINE,FINESTUDENT where FINE.F_ID=FINESTUDENT.F_ID") #Selects all records of fines
 		
 		Label=Tk.Label(Frame,text="View All Fines",bg="black",fg="white",bd=5).pack(side='top')
 		cols=("F:ID","S:ID","Amount","Date")
@@ -948,8 +952,8 @@ def finepaid(frame,root):
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 		Frame.mainloop()
 
-# View memberinfo()
-def memberinf(frame,Frame,p1,root):
+# View Personal Information of a particular member
+def memberinf(frame,Frame,p1,root):  #This fn along with memberinfo is used to view the extra information of a student in a db. This fn is particular gets details from fn below to display 
     	Frame.destroy()
     	Frame = Tk.Toplevel(bg="#000000",bd=5)
     	Frame.geometry("800x800") 
@@ -957,7 +961,7 @@ def memberinf(frame,Frame,p1,root):
     	with con:
         	cur=con.cursor()
 		sc=p1.get()
-		cur.execute("select * from PINFO where S_ID=%s",(sc,))
+		cur.execute("select * from PINFO where S_ID=%s",(sc,)) #select all records that match info entered
 		Label=Tk.Label(Frame,text="STUDENT INFO ",bg="black",fg="white",bd=5).pack(side='top')
 		cols=("ID","City","Phone","Email")
 		listBox = ttk.Treeview(Frame, columns=cols, show='headings')
@@ -978,7 +982,7 @@ def memberinf(frame,Frame,p1,root):
 		Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 		Frame.mainloop()
 
-def memberinfo(frame,root):
+def memberinfo(frame,root): #This fn along with memberinf is used to view the extra information of a student in a db. This fn is particular sets up a GUI form to get details 
 	frame.withdraw()
    	Frame = Tk.Toplevel(bg="#000000",bd=5)
 	Frame.geometry("800x800")
@@ -994,9 +998,8 @@ def memberinfo(frame,root):
 	btn.place(relx=0.5,rely=0.3,relwidth=0.15,relheight=0.1)
 	Frame.protocol("WM_DELETE_WINDOW", root.destroy)
 	Frame.mainloop()
-
-    
-# viewa() view authors
+	
+# Display all Authors
 def viewa(frame,root):
 	frame.withdraw()
 	Frame = Tk.Toplevel(bg="#000000",bd=5)
