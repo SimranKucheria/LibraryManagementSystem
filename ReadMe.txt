@@ -25,14 +25,14 @@ Student
 3)Search for books using Genre, Author, Title
 4)Add enquiries/Comments
 
-Frontend used-Tkinter
+Frontend used-Tkinter(Python)
 Backend- Python + Mysql
 MainCode-For setting up GUI menus
 Create.py-Creates all tables in sql
 Inventory.py-Code for all options (staff/student)
 To run
-1)Need to have mysql with an empty database called library with correct permissions granted
-2)Add login statement to Inventory.py Create.py to access database
+1)Need to have mysql with an empty database called library with correct permissions granted -USE Library;CREATE USER ---- IDENTIFIED BY -----; GRANT ALL ON library.* to -----
+2)Add login statement to Inventory.py Create.py to access database (acc to user created)
 3)Run Create.py first
 4)Then run MainCode.py
 
