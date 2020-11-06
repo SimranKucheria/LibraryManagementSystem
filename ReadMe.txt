@@ -1,6 +1,6 @@
 DBMS MINI PROJECT SYNOPSIS
 
-PARTNER:- Simran Kucheria(111803134)
+PARTNER:- Shruti Susan Mathews(111803134)
 Problem Statement
 Library Management System
 
@@ -25,6 +25,11 @@ Student
 3)Search for books using Genre, Author, Title
 4)Add enquiries/Comments
 
+Frontend used-Tkinter
+Backend- Python + Mysql
+MainCode-For setting up GUI menus
+Create.py-Creates all tables in sql
+Inventory.py-Code for all options (staff/student)
 To run
 1)Need to have mysql with an empty database called library with correct permissions granted
 2)Add login statement to Inventory.py Create.py to access database
@@ -32,4 +37,6 @@ To run
 4)Then run MainCode.py
 
 Screenshots of all functions and menus attached in ss folder
+
+
 
