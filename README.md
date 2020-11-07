@@ -7,7 +7,7 @@
 **Repository hosted at**:www.github.com/SimranKucheria/LibraryManagementSystem
 
 **Problem Statement**
-&nbsp Library Management System
+\n Library Management System
 
 **Introduction**
 This is a basic Library Management System using python and SQL, It can be used in schools/colleges
