@@ -1,13 +1,13 @@
 # Library Management System
 
-##DBMS MINI PROJECT SYNOPSIS
+## DBMS MINI PROJECT SYNOPSIS
 
 **PARTNER**:- Shruti Susan Mathews(111803134)
 
 **Repository hosted at**:www.github.com/SimranKucheria/LibraryManagementSystem
 
-**Problem Statement**
-\n Library Management System
+**Problem Statement** </br>
+ Library Management System
 
 **Introduction**
 This is a basic Library Management System using python and SQL, It can be used in schools/colleges
