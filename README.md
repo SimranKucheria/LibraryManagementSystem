@@ -9,13 +9,19 @@
 **Problem Statement** </br>
  Library Management System
 
-**Introduction**
+ </br>
+ 
+**Introduction**  </br>
 This is a basic Library Management System using python and SQL, It can be used in schools/colleges
 to monitor the day to day requirements of the library.
 
-**Features**
+ </br>
+ 
+**Features** </br>
 The system will have 2 modes depending on who is using it(Staff/Students)
 Staff mode will only be accessible using password (Hardcoded as 17 for now)
+
+</br>
 
 Staff
 1)Register-Books, Students, Authors, Genres(Categories as well as adding genres to books), Personal info
@@ -30,18 +36,22 @@ Student
 3)Search for books using Genre, Author, Title
 4)Add enquiries/Comments
 
-**TechStack**
+**TechStack** </br>
 Frontend used-Tkinter(Python)
 Backend- Python + Mysql
+ 
+</br>
 
-**Files in repo**
+**Files in repo** </br>
 MainCode-For setting up GUI menus
 Create.py-Creates all tables in sql
 Inventory.py-Code for all options (staff/student)
 Bg.ppm-Background image for system
 Schema1.jpg-Schema of database
 
-**Installation instructions**
+</br>
+
+**Installation instructions** </br>
 1)Run mysql
 2)Create a database library
 3) Run the foll. Instructions
@@ -53,9 +63,13 @@ CREATE USER ‘LibraryStaffs@localhost’ IDENTIFIED BY ‘Staffpw’;
 5)Then run MainCode.py
 	Python MainCode.py
 
-**Screenshots**
+</br>
+
+**Screenshots** </br>
 Screenshots of all functions and menus attached in ss folder
 
-**Schema**
+</br>
+
+**Schema** </br>
 Refer to schema1.jpg
 
